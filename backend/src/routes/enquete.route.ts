@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { getRepository } from "typeorm";
-import AppError from "../errors/AppError";
 import Enquete from "../models/Enquete";
 import Opcao from "../models/Opcao";
 import CreateEnqueteService from "../services/createEnquete.service";
@@ -13,10 +12,12 @@ const enqueteRouter = Router();
 enqueteRouter.post("/", async (request, response) => {
   const { nome, inicio, termino, opcoes } = request.body;
 
-  if (opcoes.length < 3)
-    throw new AppError(
-      "Você precisa inserir no minimo 3 opções para esta alternativa."
-    );
+  if (opcoes.length < 3) {
+    return response.status(500).json({
+      status: "error",
+      message: "Você precisa inserir no minimo 3 opções para esta alternativa.",
+    });
+  }
 
   // Create Enquete
   const createEnqueteService = new CreateEnqueteService();
@@ -73,11 +74,10 @@ enqueteRouter.get("/:enquete_id", async (request, response) => {
   const enquete = await enqueteRepository.findOne(enquete_id);
 
   if (!enquete) {
-    try {
-      throw new AppError("Não foi possivel localizar esta enquete.", 404);
-    } catch (e: any) {
-      console.error(e.message);
-    }
+    return response.status(404).json({
+      status: "error",
+      message: "Não foi possivel localizar esta enquete.",
+    });
   }
 
   return response.status(200).json(enquete);
@@ -91,11 +91,20 @@ enqueteRouter.post("/:enquete_id/:opcao_id/vote", async (request, response) => {
   const { enquete_id, opcao_id } = request.params;
 
   const enquete = await enqueteRepository.findOne(enquete_id);
-  if (!enquete)
-    throw new AppError("Não foi possivel localizar esta enquete.", 404);
+  if (!enquete) {
+    return response.status(404).json({
+      status: "error",
+      message: "Não foi possivel localizar esta enquete.",
+    });
+  }
 
   const opcao = await opcaoRepository.findOne(opcao_id);
-  if (!opcao) throw new AppError("Não foi possivel localizar esta opção.", 404);
+  if (!opcao) {
+    return response.status(404).json({
+      status: "error",
+      message: "Não foi possivel localizar esta opção.",
+    });
+  }
 
   await opcaoRepository.increment(opcao, "votos", 1);
 
@@ -110,8 +119,12 @@ enqueteRouter.delete("/:enquete_id", async (request, response) => {
   const { enquete_id } = request.params;
 
   const enquete = await enqueteRepository.findOne(enquete_id);
-  if (!enquete)
-    throw new AppError("Não foi possivel localizar esta enquete.", 404);
+  if (!enquete) {
+    return response.status(404).json({
+      status: "error",
+      message: "Não foi possivel localizar esta enquete.",
+    });
+  }
 
   await enqueteRepository.remove(enquete);
 
