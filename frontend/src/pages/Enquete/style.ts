@@ -10,7 +10,7 @@ export const EnqueteNome = styled.h1`
   margin: 40px 0;
 `;
 
-export const EnqueteOpcao = styled.div`
+export const EnqueteOpcao = styled.label`
   padding: 20px;
   border-radius: 5px;
   background: #f1f1f1;
@@ -18,6 +18,7 @@ export const EnqueteOpcao = styled.div`
   display: flex;
   gap: 20px;
   align-items: center;
+  cursor: pointer;
 `;
 
 export const OpcoesWrapper = styled.div`

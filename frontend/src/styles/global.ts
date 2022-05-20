@@ -13,6 +13,9 @@ export default createGlobalStyle`
     color: #000;
     -webkit-font-smoothing: antialiased
   }
+  :root {
+    --toastify-color-progress-light: #da1a2c;
+  }
   
   body, input, button {
     font: 16px "Poppins", sans-serif;
@@ -27,6 +30,10 @@ export default createGlobalStyle`
   }
 
   form{
+    display: flex;
+    flex-flow: column;
+    gap: 10px;
+    
     div{
       label{
         display: block;

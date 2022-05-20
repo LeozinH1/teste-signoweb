@@ -51,6 +51,8 @@ const PageEnquete: React.FC = () => {
   const [enquete, setEnquete] = useState<Enquete>();
   const { enquete_id } = useParams();
   const [btnDisabled, setBtnDisabled] = useState(true);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [countDown, setCountDown] = useState(0);
   /*
    * React Toastify
    */
@@ -94,6 +96,7 @@ const PageEnquete: React.FC = () => {
       .post(`/enquete/${enquete_id}/${data.opcao}/vote`)
       .then((res: AxiosResponse) => {
         notify("Obrigado por votar!");
+        setEnquete(res.data);
       })
       .catch((err: AxiosError) => {
         notifyError(
@@ -106,17 +109,36 @@ const PageEnquete: React.FC = () => {
    * Delete Enquete
    */
   const handleDelete = (enquete_id: number) => {
-    api
-      .delete(`/enquete/${enquete_id}`)
-      .then((res: AxiosResponse) => {
-        navigate("/");
-      })
-      .catch((err: AxiosError) => {
-        notifyError(
-          "Ocorreu um erro ao apagar a enquete. Por favor, tente novamente."
-        );
-        console.log(err.response?.data);
-      });
+    if (confirmDelete) {
+      api
+        .delete(`/enquete/${enquete_id}`)
+        .then((res: AxiosResponse) => {
+          navigate("/");
+        })
+        .catch((err: AxiosError) => {
+          setConfirmDelete(false);
+          notifyError(
+            "Ocorreu um erro ao apagar a enquete. Por favor, tente novamente."
+          );
+          console.log(err.response?.data);
+        });
+    } else {
+      setConfirmDelete(true);
+
+      setTimeout(() => {
+        setConfirmDelete(false);
+      }, 5000);
+
+      let countTmp = 5;
+      setCountDown(5);
+      const deleteTimer = setInterval(() => {
+        countTmp--;
+        setCountDown(countTmp);
+        if (countTmp < 1) {
+          clearInterval(deleteTimer);
+        }
+      }, 1000);
+    }
   };
 
   return (
@@ -137,8 +159,9 @@ const PageEnquete: React.FC = () => {
 
           <EnqueteActions>
             <Button onClick={() => handleDelete(Number(enquete_id))}>
-              Apagar
+              {confirmDelete ? `Confirmar (${countDown})` : "Apagar"}
             </Button>
+
             <Button>Editar</Button>
           </EnqueteActions>
         </div>
@@ -162,24 +185,22 @@ const PageEnquete: React.FC = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <OpcoesWrapper>
             {enquete?.opcoes.map((opcao: Opcao) => (
-              <>
-                <EnqueteOpcao>
-                  <OpcaoNome>{opcao.nome}</OpcaoNome>
-                  <OpcaoVotos>{String(opcao.votos)} votos</OpcaoVotos>
+              <EnqueteOpcao key={Number(opcao.id)}>
+                <OpcaoNome>{opcao.nome}</OpcaoNome>
+                <OpcaoVotos>{String(opcao.votos)} votos</OpcaoVotos>
 
-                  <input
-                    type="radio"
-                    {...register("opcao", {
-                      required: {
-                        value: true,
-                        message: "Por favor, escolha uma das alternativas.",
-                      },
-                    })}
-                    value={String(opcao.id)}
-                    id={String(opcao.id)}
-                  />
-                </EnqueteOpcao>
-              </>
+                <input
+                  type="radio"
+                  {...register("opcao", {
+                    required: {
+                      value: true,
+                      message: "Por favor, escolha uma das alternativas.",
+                    },
+                  })}
+                  value={String(opcao.id)}
+                  id={String(opcao.id)}
+                />
+              </EnqueteOpcao>
             ))}
           </OpcoesWrapper>
           {errors.opcao && <label role="alert">{errors.opcao.message}</label>}

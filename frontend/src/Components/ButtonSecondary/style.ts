@@ -8,11 +8,11 @@ export const ButtonStyle = styled.button`
   padding: 15px;
   border: none;
   font-size: 0.9rem;
-  background: #da1a2c;
-  color: #fff;
+  background: #f3f3f3;
+  color: #000;
 
   &:hover {
-    filter: grayscale(0.3);
+    background: #e8e8e8;
   }
 
   &:disabled {

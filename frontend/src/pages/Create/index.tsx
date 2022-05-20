@@ -1,6 +1,6 @@
 import React from "react";
 import api from "../../services/api";
-import { Wrapper, PageTitle } from "./style";
+import { Wrapper, PageTitle, OpcaoItem } from "./style";
 import { Link } from "react-router-dom";
 import { useForm, useFieldArray } from "react-hook-form";
 import { AxiosError, AxiosResponse } from "axios";
@@ -8,6 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Input from "../../Components/Input";
 import Button from "../../Components/Button";
+import ButtonSecondary from "../../Components/ButtonSecondary";
 
 const PageCreate: React.FC = () => {
   /*
@@ -145,16 +146,15 @@ const PageCreate: React.FC = () => {
           </div>
 
           <div>
-            <div>({fields.length}/20)</div>
-            <Button
+            <ButtonSecondary
               onClick={(e) => addOpcao(e)}
               disabled={fields.length >= 20 ? true : false}
             >
-              Adicionar Opção
-            </Button>
+              Adicionar Opção ({fields.length}/20)
+            </ButtonSecondary>
             {fields.map((field, index) => (
               <>
-                <div key={field.id}>
+                <OpcaoItem key={field.id}>
                   <Input
                     type="text"
                     {...register(`enquete.opcoes.${index}.nome`, {
@@ -162,8 +162,10 @@ const PageCreate: React.FC = () => {
                     })}
                   />
 
-                  <Button onClick={(e) => removeOpcao(e, index)}>X</Button>
-                </div>
+                  <ButtonSecondary onClick={(e) => removeOpcao(e, index)}>
+                    X
+                  </ButtonSecondary>
+                </OpcaoItem>
               </>
             ))}
           </div>

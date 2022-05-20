@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
     transition: 0.2s;
     text-decoration: none;
     color: #000;
-    border-bottom: 4px solid #9d00ff;
+    border-bottom: 4px solid #da1a2c;
 
     &:hover {
       transform: translateX(10px);

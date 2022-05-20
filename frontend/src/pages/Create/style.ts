@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Wrapper as Input } from "../../Components/Input/style";
 
 export const Wrapper = styled.div`
   max-width: 600px;
@@ -37,3 +38,15 @@ export const PageTitle = styled.h1`
 export const OpcaoVotos = styled.div``;
 export const EnqueteInicio = styled.div``;
 export const EnqueteTermino = styled.div``;
+
+export const OpcaoItem = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+
+  ${Input} {
+    flex: 1;
+    margin: 10px 0;
+  }
+`;
