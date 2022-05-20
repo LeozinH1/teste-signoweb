@@ -21,6 +21,7 @@ class CreateOpcaoService {
     const opcao = await opcaoRepository.save({
       enqueteId,
       nome,
+      votos: 0,
     });
 
     return opcao;

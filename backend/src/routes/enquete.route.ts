@@ -60,7 +60,10 @@ enqueteRouter.post("/:enqueteId/opcao", async (request, response) => {
 enqueteRouter.get("/", async (request, response) => {
   const enqueteRepository = getRepository(Enquete);
 
-  const enquetes = await enqueteRepository.find();
+  const enquetes = await enqueteRepository
+    .createQueryBuilder()
+    .orderBy("created_at", "DESC")
+    .getMany();
 
   return response.status(200).json(enquetes);
 });
@@ -106,9 +109,11 @@ enqueteRouter.post("/:enquete_id/:opcao_id/vote", async (request, response) => {
     });
   }
 
-  await opcaoRepository.increment(opcao, "votos", 1);
+  await opcaoRepository.increment({ id: opcao.id }, "votos", 1);
 
-  return response.status(200).json({});
+  const returnEnquete = await enqueteRepository.findOne(enquete_id);
+
+  return response.status(200).json(returnEnquete);
 });
 
 // Delete Enquete
