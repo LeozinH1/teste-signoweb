@@ -2,6 +2,8 @@
 
 Este projeto foi desenvolvido como parte do processo seletivo realizado pela empresa [SignoWeb](https://site.signoweb.com.br/).
 
+![enter image description here](https://i.imgur.com/GlCblm2.png)
+
 ## SISTEMA DE VOTAÇÃO
 
 Criar um back (crud completo de criação/edição/exclusão) com gerenciamento de enquete e opções.
