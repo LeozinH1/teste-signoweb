@@ -2,8 +2,7 @@
 
 Este projeto foi desenvolvido como parte do processo seletivo realizado pela empresa [SignoWeb](https://site.signoweb.com.br/).
 
-![enter image description here](https://i.imgur.com/GlCblm2.png)
-<img src="https://i.imgur.com/GlCblm2.png" width="100">
+<img src="https://i.imgur.com/GlCblm2.png" width="800">
 
 ## SISTEMA DE VOTAÇÃO
 
