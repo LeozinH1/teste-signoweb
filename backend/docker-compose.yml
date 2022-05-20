@@ -1,0 +1,12 @@
+version: "3.1"
+services:
+  signoweb_db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: signoweb
+      MYSQL_DATABASE: signoweb
+      MYSQL_USER: signoweb
+      MYSQL_PASSWORD: signoweb
+    ports:
+      - "3306:3306"
