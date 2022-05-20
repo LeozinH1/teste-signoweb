@@ -2,12 +2,14 @@
 
 Este projeto foi desenvolvido como parte do processo seletivo realizado pela empresa [SignoWeb](https://site.signoweb.com.br/).
 
+<details>
 <img src="https://i.imgur.com/gdYNZgE.png" width="800">
 
 <img src="https://i.imgur.com/aSHb92d.png" width="800">
 
 <img src="https://i.imgur.com/LqS6qBs.png" width="800">
-
+</details>
+  
 ## SISTEMA DE VOTAÇÃO
 
 Criar um back (crud completo de criação/edição/exclusão) com gerenciamento de enquete e opções.
