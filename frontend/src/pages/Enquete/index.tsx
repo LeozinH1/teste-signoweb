@@ -12,7 +12,7 @@ import {
   EnqueteInfo,
   EnqueteActions,
 } from "./style";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
@@ -44,6 +44,8 @@ const PageEnquete: React.FC = () => {
     formState: { errors },
   } = useForm();
 
+  const navigate = useNavigate();
+
   const notify = (message: string) => {
     toast(message, {
       position: "top-center",
@@ -61,17 +63,23 @@ const PageEnquete: React.FC = () => {
   const [btnDisabled, setBtnDisabled] = useState(true);
 
   useEffect(() => {
-    api.get(`/enquete/${enquete_id}`).then((res: AxiosResponse) => {
-      setEnquete(res.data);
+    api
+      .get(`/enquete/${enquete_id}`)
+      .then((res: AxiosResponse) => {
+        setEnquete(res.data);
 
-      if (
-        new Date(res.data.inicio) < new Date() &&
-        new Date(res.data.termino) > new Date()
-      ) {
-        setBtnDisabled(false);
-      }
-    });
-  });
+        if (
+          new Date(res.data.inicio) < new Date() &&
+          new Date(res.data.termino) > new Date()
+        ) {
+          setBtnDisabled(false);
+        }
+      })
+      .catch((err: AxiosError) => {
+        console.log(err.message);
+        navigate("/");
+      });
+  }, [navigate, enquete_id]);
 
   const onSubmit = (data: any) => {
     api
@@ -82,6 +90,20 @@ const PageEnquete: React.FC = () => {
       .catch((err: AxiosError) => {
         notifyError(
           "Ocorreu um erro ao enviar seu voto. Por favor, tente novamente."
+        );
+        console.log(err);
+      });
+  };
+
+  const handleDelete = (enquete_id: number) => {
+    api
+      .delete(`/enquete/${enquete_id}`)
+      .then((res: AxiosResponse) => {
+        navigate("/");
+      })
+      .catch((err: AxiosError) => {
+        notifyError(
+          "Ocorreu um erro ao apagar a enquete. Por favor, tente novamente."
         );
         console.log(err);
       });
@@ -104,7 +126,9 @@ const PageEnquete: React.FC = () => {
           <EnqueteNome>{enquete?.nome}</EnqueteNome>
 
           <EnqueteActions>
-            <Button>Apagar</Button>
+            <Button onClick={() => handleDelete(Number(enquete_id))}>
+              Apagar
+            </Button>
             <Button>Editar</Button>
           </EnqueteActions>
         </div>
