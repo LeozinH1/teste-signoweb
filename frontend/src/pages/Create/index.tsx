@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import api from "../../services/api";
 import { Wrapper, PageTitle } from "./style";
 import { Link } from "react-router-dom";
@@ -10,6 +10,9 @@ import Input from "../../Components/Input";
 import Button from "../../Components/Button";
 
 const PageCreate: React.FC = () => {
+  /*
+   * Declare Variables
+   */
   const {
     register,
     control,
@@ -17,13 +20,13 @@ const PageCreate: React.FC = () => {
     formState: { errors },
   } = useForm();
 
-  /*********************************************************/
-
   const { fields, append, remove } = useFieldArray({
     control,
     name: "enquete.opcoes",
   });
-
+  /*
+   * Add Opção
+   */
   const addOpcao = (e: any) => {
     e.preventDefault();
 
@@ -31,14 +34,17 @@ const PageCreate: React.FC = () => {
       append({});
     }
   };
-
+  /*
+   * Remove Opção
+   */
   const removeOpcao = (e: any, index: number) => {
     e.preventDefault();
 
     remove(index);
   };
-
-  /*********************************************************/
+  /*
+   * React Toastify
+   */
   const notify = (message: string) => {
     toast(message, {
       position: "top-center",
@@ -50,7 +56,9 @@ const PageCreate: React.FC = () => {
       position: "top-center",
     });
   };
-
+  /*
+   * Create Enquete
+   */
   const onSubmit = (data: any) => {
     if (fields.length >= 3) {
       api
@@ -73,10 +81,6 @@ const PageCreate: React.FC = () => {
       );
     }
   };
-
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
 
   return (
     <>

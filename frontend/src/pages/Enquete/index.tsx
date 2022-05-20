@@ -38,6 +38,9 @@ interface Enquete {
 }
 
 const PageEnquete: React.FC = () => {
+  /*
+   * Declare Variables
+   */
   const {
     register,
     handleSubmit,
@@ -45,7 +48,12 @@ const PageEnquete: React.FC = () => {
   } = useForm();
 
   const navigate = useNavigate();
-
+  const [enquete, setEnquete] = useState<Enquete>();
+  const { enquete_id } = useParams();
+  const [btnDisabled, setBtnDisabled] = useState(true);
+  /*
+   * React Toastify
+   */
   const notify = (message: string) => {
     toast(message, {
       position: "top-center",
@@ -57,11 +65,9 @@ const PageEnquete: React.FC = () => {
       position: "top-center",
     });
   };
-
-  const [enquete, setEnquete] = useState<Enquete>();
-  const { enquete_id } = useParams();
-  const [btnDisabled, setBtnDisabled] = useState(true);
-
+  /*
+   * Load Enquete Data
+   */
   useEffect(() => {
     api
       .get(`/enquete/${enquete_id}`)
@@ -76,11 +82,13 @@ const PageEnquete: React.FC = () => {
         }
       })
       .catch((err: AxiosError) => {
-        console.log(err.message);
+        console.log(err.response?.data);
         navigate("/");
       });
   }, [navigate, enquete_id]);
-
+  /*
+   * Create Vote
+   */
   const onSubmit = (data: any) => {
     api
       .post(`/enquete/${enquete_id}/${data.opcao}/vote`)
@@ -91,10 +99,12 @@ const PageEnquete: React.FC = () => {
         notifyError(
           "Ocorreu um erro ao enviar seu voto. Por favor, tente novamente."
         );
-        console.log(err);
+        console.log(err.response?.data);
       });
   };
-
+  /*
+   * Delete Enquete
+   */
   const handleDelete = (enquete_id: number) => {
     api
       .delete(`/enquete/${enquete_id}`)
@@ -105,7 +115,7 @@ const PageEnquete: React.FC = () => {
         notifyError(
           "Ocorreu um erro ao apagar a enquete. Por favor, tente novamente."
         );
-        console.log(err);
+        console.log(err.response?.data);
       });
   };
 

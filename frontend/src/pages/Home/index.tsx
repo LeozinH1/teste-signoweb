@@ -25,8 +25,13 @@ interface Enquete {
 }
 
 const PageHome: React.FC = () => {
+  /*
+   * Declare Variables
+   */
   const [enquetes, setEnquetes] = useState<Enquete[]>([]);
-
+  /*
+   * Load Enquetes
+   */
   useEffect(() => {
     api.get("/enquete").then((res: AxiosResponse) => {
       setEnquetes(res.data);
@@ -42,9 +47,7 @@ const PageHome: React.FC = () => {
         </EnquetesHeader>
         {enquetes
           ? enquetes.map((enquete: Enquete) => (
-              <>
-                <EnqueteItem enquete={enquete} />
-              </>
+              <EnqueteItem enquete={enquete} key={String(enquete.id)} />
             ))
           : "Nenhuma enquete foi encontrada."}
       </Wrapper>
