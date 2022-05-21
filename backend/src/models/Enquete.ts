@@ -23,9 +23,7 @@ class Enquete {
   @Column()
   termino: Date;
 
-  @OneToMany(() => Opcao, (opcao) => opcao.enquete, {
-    cascade: true,
-  })
+  @OneToMany(() => Opcao, (opcao) => opcao.enquete)
   opcoes: Opcao[];
 
   @CreateDateColumn()

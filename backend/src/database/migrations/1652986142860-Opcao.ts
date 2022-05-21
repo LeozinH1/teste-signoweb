@@ -5,6 +5,7 @@ class Opcao1652986142860 implements MigrationInterface {
     await queryRunner.createTable(
       new Table({
         name: "opcao",
+
         columns: [
           {
             name: "id",

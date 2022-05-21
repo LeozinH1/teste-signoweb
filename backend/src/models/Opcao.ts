@@ -22,7 +22,9 @@ class Opcao {
   @Column()
   votos: Number;
 
-  @ManyToOne(() => Enquete, (enquete) => enquete.opcoes)
+  @ManyToOne(() => Enquete, (enquete) => enquete.opcoes, {
+    onDelete: "CASCADE",
+  })
   enquete: Enquete;
 
   @CreateDateColumn()

@@ -180,10 +180,16 @@ enqueteRouter.post("/:enquete_id/:opcao_id/vote", async (request, response) => {
 
 enqueteRouter.delete("/:enquete_id", async (request, response) => {
   const enqueteRepository = getRepository(Enquete);
+  const opcoesRepository = getRepository(Opcao);
 
   const { enquete_id } = request.params;
 
-  const enquete = await enqueteRepository.findOne(enquete_id);
+  const enquete = await enqueteRepository.findOne({
+    where: {
+      id: enquete_id,
+    },
+  });
+
   if (!enquete) {
     return response.status(404).json({
       status: "error",
@@ -191,7 +197,14 @@ enqueteRouter.delete("/:enquete_id", async (request, response) => {
     });
   }
 
+  const opcoes = await opcoesRepository.find({
+    where: {
+      enqueteId: enquete_id,
+    },
+  });
+
   await enqueteRepository.remove(enquete);
+  await opcoesRepository.remove(opcoes);
 
   return response.status(200).json({});
 });
