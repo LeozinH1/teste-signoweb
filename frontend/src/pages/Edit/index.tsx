@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import api from "../../services/api";
 import { Wrapper, PageTitle, OpcaoItem } from "./style";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useForm, useFieldArray } from "react-hook-form";
 import { AxiosError, AxiosResponse } from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -10,21 +10,63 @@ import Input from "../../Components/Input";
 import Button from "../../Components/Button";
 import ButtonSecondary from "../../Components/ButtonSecondary";
 
-const PageCreate: React.FC = () => {
+interface Opcao {
+  id: Number;
+  enqueteId: Number;
+  nome: String;
+  votos: Number;
+  created_at: Date;
+  updated_at: Date;
+}
+
+interface Enquete {
+  id: Number;
+  nome: String;
+  inicio: Date;
+  termino: Date;
+  created_at: Date;
+  updated_at: Date;
+  opcoes: Opcao[];
+}
+
+const PageEdit: React.FC = () => {
   /*
    * Declare Variables
    */
+  const navigate = useNavigate();
+
   const {
     register,
     control,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm();
 
   const { fields, append, remove } = useFieldArray({
     control,
     name: "enquete.opcoes",
   });
+
+  const { enquete_id } = useParams();
+
+  /*
+   * Load Enquete Data
+   */
+  useEffect(() => {
+    api
+      .get(`/enquete/${enquete_id}`)
+      .then((res: AxiosResponse) => {
+        setValue("enquete.nome", res.data.nome);
+        setValue("enquete.inicio", res.data.inicio.replace("Z", ""));
+        setValue("enquete.termino", res.data.termino.replace("Z", ""));
+        setValue("enquete.opcoes", res.data.opcoes);
+      })
+      .catch((err: AxiosError) => {
+        console.log(err.response?.data);
+        navigate("/");
+      });
+  }, [navigate, enquete_id]);
   /*
    * Add Opção
    */
@@ -58,23 +100,23 @@ const PageCreate: React.FC = () => {
     });
   };
   /*
-   * Create Enquete
+   * Update Enquete
    */
   const onSubmit = (data: any) => {
     if (fields.length >= 3) {
       api
-        .post("/enquete", {
+        .post(`/enquete/${enquete_id}/update`, {
           nome: data.enquete.nome,
           inicio: data.enquete.inicio,
           termino: data.enquete.termino,
           opcoes: data.enquete.opcoes,
         })
         .then((res: AxiosResponse) => {
-          notify("Enquete criada com sucesso");
+          notify("Enquete atualizada com sucesso");
         })
         .catch((err: AxiosError) => {
           console.log(err);
-          notifyError("Ocorreu um erro ao criar a enquete.");
+          notifyError("Ocorreu um erro ao atualizar a enquete.");
         });
     } else {
       notifyError(
@@ -90,7 +132,7 @@ const PageCreate: React.FC = () => {
       <Wrapper>
         <Link to="/">Voltar</Link>
 
-        <PageTitle>Criar Enquete</PageTitle>
+        <PageTitle>Editar Enquete</PageTitle>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div>
@@ -170,11 +212,11 @@ const PageCreate: React.FC = () => {
             ))}
           </div>
 
-          <Button>Criar</Button>
+          <Button>Salvar</Button>
         </form>
       </Wrapper>
     </>
   );
 };
 
-export default PageCreate;
+export default PageEdit;

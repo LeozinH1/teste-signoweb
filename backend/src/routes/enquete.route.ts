@@ -39,6 +39,50 @@ enqueteRouter.post("/", async (request, response) => {
   return response.status(201).json(createEnquete);
 });
 
+// Update Enquete
+
+enqueteRouter.post("/:enquete_id/update", async (request, response) => {
+  const { nome, inicio, termino, opcoes } = request.body;
+  const { enquete_id } = request.params;
+
+  if (opcoes.length < 3) {
+    return response.status(500).json({
+      status: "error",
+      message: "Você precisa inserir no minimo 3 opções para esta alternativa.",
+    });
+  }
+
+  // Update Enquete
+  const enqueteRepository = getRepository(Enquete);
+  const enquete = await enqueteRepository.findOne(enquete_id);
+  if (!enquete) return response.status(404).json({});
+  await enqueteRepository.update(Number(enquete.id), {
+    nome,
+    inicio,
+    termino,
+  });
+
+  // Update Opcoes
+  const opcaoRepository = getRepository(Opcao);
+  opcoes.map(async (opcao: any) => {
+    const teste = await opcaoRepository.findOne(opcao.id);
+    if (!teste) return;
+    await opcaoRepository.update(Number(opcao.id), {
+      nome: opcao.nome,
+    });
+  });
+
+  // Return
+  const returnData = await enqueteRepository.findOne({
+    where: {
+      id: enquete_id,
+    },
+    relations: ["opcoes"],
+  });
+
+  return response.status(200).json(returnData);
+});
+
 // Create Opção
 
 enqueteRouter.post("/:enqueteId/opcao", async (request, response) => {
@@ -74,7 +118,14 @@ enqueteRouter.get("/:enquete_id", async (request, response) => {
   const { enquete_id } = request.params;
   const enqueteRepository = getRepository(Enquete);
 
-  const enquete = await enqueteRepository.findOne(enquete_id);
+  // const enquete = await enqueteRepository.findOne(enquete_id);
+
+  const enquete = await enqueteRepository.findOne({
+    where: {
+      id: enquete_id,
+    },
+    relations: ["opcoes"],
+  });
 
   if (!enquete) {
     return response.status(404).json({
@@ -93,6 +144,7 @@ enqueteRouter.post("/:enquete_id/:opcao_id/vote", async (request, response) => {
   const opcaoRepository = getRepository(Opcao);
   const { enquete_id, opcao_id } = request.params;
 
+  // Get enquete
   const enquete = await enqueteRepository.findOne(enquete_id);
   if (!enquete) {
     return response.status(404).json({
@@ -101,6 +153,7 @@ enqueteRouter.post("/:enquete_id/:opcao_id/vote", async (request, response) => {
     });
   }
 
+  // Get Opcao
   const opcao = await opcaoRepository.findOne(opcao_id);
   if (!opcao) {
     return response.status(404).json({
@@ -109,11 +162,18 @@ enqueteRouter.post("/:enquete_id/:opcao_id/vote", async (request, response) => {
     });
   }
 
+  // Increment Votos
   await opcaoRepository.increment({ id: opcao.id }, "votos", 1);
 
-  const returnEnquete = await enqueteRepository.findOne(enquete_id);
+  // Return
+  const returnData = await enqueteRepository.findOne({
+    where: {
+      id: enquete_id,
+    },
+    relations: ["opcoes"],
+  });
 
-  return response.status(200).json(returnEnquete);
+  return response.status(200).json(returnData);
 });
 
 // Delete Enquete

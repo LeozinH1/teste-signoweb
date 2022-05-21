@@ -162,7 +162,9 @@ const PageEnquete: React.FC = () => {
               {confirmDelete ? `Confirmar (${countDown})` : "Apagar"}
             </Button>
 
-            <Button>Editar</Button>
+            <Link to={`/edit/${enquete_id}`}>
+              <Button>Editar</Button>
+            </Link>
           </EnqueteActions>
         </div>
 
@@ -199,6 +201,7 @@ const PageEnquete: React.FC = () => {
                   })}
                   value={String(opcao.id)}
                   id={String(opcao.id)}
+                  disabled={btnDisabled}
                 />
               </EnqueteOpcao>
             ))}
