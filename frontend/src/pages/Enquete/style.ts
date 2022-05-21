@@ -4,6 +4,11 @@ export const Wrapper = styled.div`
   max-width: 600px;
   margin: 0 auto;
   padding: 100px 0;
+
+  @media screen and (max-width: 1200px) {
+    width: 100%;
+    padding: 50px 20px;
+  }
 `;
 
 export const EnqueteNome = styled.h1`

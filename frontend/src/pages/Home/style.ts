@@ -9,6 +9,11 @@ export const Wrapper = styled.div`
   padding: 100px 0;
   width: 600px;
   margin: 0 auto;
+
+  @media screen and (max-width: 1200px) {
+    width: 100%;
+    padding: 50px 20px;
+  }
 `;
 
 export const PageTitle = styled.h1`
