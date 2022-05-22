@@ -193,7 +193,10 @@ const PageEnquete: React.FC = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <OpcoesWrapper>
             {enquete?.opcoes.map((opcao: Opcao) => (
-              <EnqueteOpcao key={Number(opcao.id)}>
+              <EnqueteOpcao
+                key={Number(opcao.id)}
+                style={{ cursor: btnDisabled ? "not-allowed" : "pointer" }}
+              >
                 <OpcaoNome>{opcao.nome}</OpcaoNome>
                 <OpcaoVoto>
                   <span>{String(opcao.votos)} votos</span>
@@ -216,7 +219,12 @@ const PageEnquete: React.FC = () => {
           </OpcoesWrapper>
           {errors.opcao && <label role="alert">{errors.opcao.message}</label>}
 
-          <Button disabled={btnDisabled}>Votar</Button>
+          <Button
+            disabled={btnDisabled}
+            style={{ cursor: btnDisabled ? "not-allowed" : "default" }}
+          >
+            Votar
+          </Button>
         </form>
       </Wrapper>
     </>
