@@ -188,6 +188,7 @@ enqueteRouter.delete("/:enquete_id", async (request, response) => {
     where: {
       id: enquete_id,
     },
+    relations: ["opcoes"],
   });
 
   if (!enquete) {

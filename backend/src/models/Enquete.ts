@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  JoinTable,
 } from "typeorm";
 
 import Opcao from "./Opcao";
@@ -23,7 +24,8 @@ class Enquete {
   @Column()
   termino: Date;
 
-  @OneToMany(() => Opcao, (opcao) => opcao.enquete)
+  @OneToMany(() => Opcao, (opcao) => opcao.enquete, { cascade: true })
+  @JoinTable()
   opcoes: Opcao[];
 
   @CreateDateColumn()

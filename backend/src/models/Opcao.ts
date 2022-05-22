@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  JoinColumn,
 } from "typeorm";
 import Enquete from "./Enquete";
 
@@ -25,6 +26,7 @@ class Opcao {
   @ManyToOne(() => Enquete, (enquete) => enquete.opcoes, {
     onDelete: "CASCADE",
   })
+  @JoinColumn()
   enquete: Enquete;
 
   @CreateDateColumn()
