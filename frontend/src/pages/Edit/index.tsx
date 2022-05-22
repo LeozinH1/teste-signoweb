@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import api from "../../services/api";
 import { Wrapper, PageTitle, OpcaoItem } from "./style";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -9,25 +9,6 @@ import "react-toastify/dist/ReactToastify.css";
 import Input from "../../Components/Input";
 import Button from "../../Components/Button";
 import ButtonSecondary from "../../Components/ButtonSecondary";
-
-interface Opcao {
-  id: Number;
-  enqueteId: Number;
-  nome: String;
-  votos: Number;
-  created_at: Date;
-  updated_at: Date;
-}
-
-interface Enquete {
-  id: Number;
-  nome: String;
-  inicio: Date;
-  termino: Date;
-  created_at: Date;
-  updated_at: Date;
-  opcoes: Opcao[];
-}
 
 const PageEdit: React.FC = () => {
   /*
@@ -144,6 +125,8 @@ const PageEdit: React.FC = () => {
                   value: true,
                   message: "Este campo é obrigatório.",
                 },
+                maxLength: { value: 200, message: "Máximo 200 caracteres." },
+                minLength: { value: 5, message: "Mínimo 5 caracteres." },
               })}
               hasError={errors.enquete && errors.enquete.nome}
             />

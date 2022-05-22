@@ -34,8 +34,19 @@ const EnqueteItem: React.FC<EnqueteItemProps> = ({
       <EnqueteNome>{enquete.nome}</EnqueteNome>
 
       <EnqueteFooter>
-        <span>{format(new Date(enquete.inicio), "H:mm - dd/MM/yy")}</span>
-        <span>{format(new Date(enquete.termino), "H:mm - dd/MM/yy")}</span>
+        <div>Início: {format(new Date(enquete.inicio), "H:mm - dd/MM/yy")}</div>
+        <div>
+          Termino: {format(new Date(enquete.termino), "H:mm - dd/MM/yy")}
+        </div>
+        <div>
+          {new Date(enquete.inicio) > new Date() && "em breve"}
+
+          {new Date(enquete.termino) < new Date() && "encerrada"}
+
+          {new Date(enquete.inicio) < new Date() &&
+            new Date(enquete.termino) > new Date() &&
+            "ativa"}
+        </div>
       </EnqueteFooter>
     </Link>
   </Wrapper>

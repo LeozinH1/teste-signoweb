@@ -10,6 +10,9 @@ export const Wrapper = styled.div`
   width: 600px;
   margin: 0 auto;
 
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+
   @media screen and (max-width: 1200px) {
     width: 100%;
     padding: 50px 20px;

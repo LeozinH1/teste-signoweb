@@ -29,6 +29,13 @@ export const EnqueteNome = styled.div`
 
 export const EnqueteFooter = styled.div`
   display: flex;
-  justify-content: space-between;
-  font-size: 0.85rem;
+  flex-wrap: wrap;
+  gap: 5px;
+
+  > div {
+    font-size: 0.9rem;
+    background: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+  }
 `;

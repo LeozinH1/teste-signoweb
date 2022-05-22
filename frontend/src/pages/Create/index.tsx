@@ -102,6 +102,8 @@ const PageCreate: React.FC = () => {
                   value: true,
                   message: "Este campo é obrigatório.",
                 },
+                maxLength: { value: 200, message: "Máximo 200 caracteres." },
+                minLength: { value: 5, message: "Mínimo 5 caracteres." },
               })}
               hasError={errors.enquete && errors.enquete.nome}
             />

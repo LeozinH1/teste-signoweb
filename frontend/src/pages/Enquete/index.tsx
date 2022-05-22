@@ -2,21 +2,22 @@ import { AxiosError, AxiosResponse } from "axios";
 import React, { useEffect, useState } from "react";
 import Button from "../../Components/Button";
 import api from "../../services/api";
-import {
-  Wrapper,
-  EnqueteOpcao,
-  OpcoesWrapper,
-  OpcaoNome,
-  OpcaoVotos,
-  EnqueteNome,
-  EnqueteInfo,
-  EnqueteActions,
-} from "./style";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  Wrapper,
+  EnqueteOpcao,
+  OpcoesWrapper,
+  OpcaoNome,
+  EnqueteNome,
+  EnqueteActions,
+  EnqueteHeader,
+  OpcaoVoto,
+  InfoWrapper,
+} from "./style";
 
 interface Opcao {
   id: Number;
@@ -148,13 +149,7 @@ const PageEnquete: React.FC = () => {
       <Wrapper>
         <Link to="/">Voltar</Link>
 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
+        <EnqueteHeader>
           <EnqueteNome>{enquete?.nome}</EnqueteNome>
 
           <EnqueteActions>
@@ -166,48 +161,61 @@ const PageEnquete: React.FC = () => {
               <Button>Editar</Button>
             </Link>
           </EnqueteActions>
-        </div>
+        </EnqueteHeader>
 
-        <div>
-          <EnqueteInfo>
-            Inicio{" "}
+        <InfoWrapper>
+          <div>
+            Inicio:{" "}
             <span>
               {enquete && format(new Date(enquete.inicio), "H:mm - dd/MM/yy")}
             </span>
-          </EnqueteInfo>
+          </div>
 
-          <EnqueteInfo>
-            Termino{" "}
+          <div>
+            Termino:{" "}
             <span>
               {enquete && format(new Date(enquete.termino), "H:mm - dd/MM/yy")}
             </span>
-          </EnqueteInfo>
-        </div>
+          </div>
+
+          <div>
+            {enquete && new Date(enquete.inicio) > new Date() && "em breve"}
+
+            {enquete && new Date(enquete.termino) < new Date() && "encerrada"}
+
+            {enquete &&
+              new Date(enquete.inicio) < new Date() &&
+              new Date(enquete.termino) > new Date() &&
+              "ativa"}
+          </div>
+        </InfoWrapper>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <OpcoesWrapper>
             {enquete?.opcoes.map((opcao: Opcao) => (
               <EnqueteOpcao key={Number(opcao.id)}>
                 <OpcaoNome>{opcao.nome}</OpcaoNome>
-                <OpcaoVotos>{String(opcao.votos)} votos</OpcaoVotos>
+                <OpcaoVoto>
+                  <span>{String(opcao.votos)} votos</span>
 
-                <input
-                  type="radio"
-                  {...register("opcao", {
-                    required: {
-                      value: true,
-                      message: "Por favor, escolha uma das alternativas.",
-                    },
-                  })}
-                  value={String(opcao.id)}
-                  id={String(opcao.id)}
-                  disabled={btnDisabled}
-                />
+                  <input
+                    type="radio"
+                    {...register("opcao", {
+                      required: {
+                        value: true,
+                        message: "Por favor, escolha uma das alternativas.",
+                      },
+                    })}
+                    value={String(opcao.id)}
+                    id={String(opcao.id)}
+                    disabled={btnDisabled}
+                  />
+                </OpcaoVoto>
               </EnqueteOpcao>
             ))}
           </OpcoesWrapper>
           {errors.opcao && <label role="alert">{errors.opcao.message}</label>}
-          <br />
+
           <Button disabled={btnDisabled}>Votar</Button>
         </form>
       </Wrapper>
