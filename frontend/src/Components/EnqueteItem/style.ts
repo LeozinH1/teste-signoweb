@@ -17,7 +17,7 @@ export const Wrapper = styled.div`
     border-bottom: 4px solid #da1a2c;
 
     &:hover {
-      transform: translateX(10px);
+      transform: scale(1.01);
     }
   }
 `;

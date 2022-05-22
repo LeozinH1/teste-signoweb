@@ -13,6 +13,7 @@ export default createGlobalStyle`
     color: #000;
     -webkit-font-smoothing: antialiased
   }
+  
   :root {
     --toastify-color-progress-light: #da1a2c;
   }

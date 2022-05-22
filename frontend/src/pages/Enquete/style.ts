@@ -18,6 +18,7 @@ export const Wrapper = styled.div`
 export const EnqueteHeader = styled.div`
   display: flex;
   gap: 10px;
+  justify-content: space-between;
 
   @media screen and (max-width: 1200px) {
     flex-flow: column;
@@ -41,7 +42,7 @@ export const EnqueteActions = styled.div`
   gap: 10px;
   align-items: center;
   justify-content: flex-end;
-  width: 100%;
+  // width: 100%;
 
   @media screen and (max-width: 1200px) {
     justify-content: flex-end;
