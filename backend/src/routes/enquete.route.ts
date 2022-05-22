@@ -65,11 +65,21 @@ enqueteRouter.post("/:enquete_id/update", async (request, response) => {
   // Update Opcoes
   const opcaoRepository = getRepository(Opcao);
   opcoes.map(async (opcao: any) => {
-    const teste = await opcaoRepository.findOne(opcao.id);
-    if (!teste) return;
-    await opcaoRepository.update(Number(opcao.id), {
-      nome: opcao.nome,
-    });
+    if (opcao.id) {
+      const opcaoExists = await opcaoRepository.findOne(opcao.id);
+      if (!opcaoExists) return;
+
+      await opcaoRepository.update(Number(opcao.id), {
+        nome: opcao.nome,
+      });
+    } else {
+      const createOpcaoService = new CreateOpcaoService();
+
+      await createOpcaoService.execute({
+        enqueteId: Number(enquete_id),
+        nome: opcao.nome,
+      });
+    }
   });
 
   // Return
