@@ -64,8 +64,21 @@ enqueteRouter.post("/:enquete_id/update", async (request, response) => {
 
   // Update Opcoes
   const opcaoRepository = getRepository(Opcao);
+
+  const DBOpcoes = await opcaoRepository.find({
+    where: { enqueteId: enquete_id },
+  });
+
+  // Delete opcao
+  DBOpcoes.map(async (DBOpcao) => {
+    if (!opcoes.find((opcao: any) => opcao.id == DBOpcao.id)) {
+      await opcaoRepository.remove(DBOpcao);
+    }
+  });
+
   opcoes.map(async (opcao: any) => {
     if (opcao.id) {
+      // Edit existing opcao
       const opcaoExists = await opcaoRepository.findOne(opcao.id);
       if (!opcaoExists) return;
 
@@ -73,6 +86,7 @@ enqueteRouter.post("/:enquete_id/update", async (request, response) => {
         nome: opcao.nome,
       });
     } else {
+      // Add new Opcao
       const createOpcaoService = new CreateOpcaoService();
 
       await createOpcaoService.execute({
