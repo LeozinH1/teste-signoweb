@@ -1,5 +1,7 @@
 # Getting Started with Backend
 
+This project uses the [Express](https://expressjs.com/). for handle http requests.
+
 ## Available Scripts
 
 In the project directory, you can run:
