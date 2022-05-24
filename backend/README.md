@@ -1,6 +1,6 @@
 # Getting Started with Backend
 
-This project uses the [Express](https://expressjs.com/) to handle http requests and [Typeorm](https://typeorm.io/) to database manipulate data.
+This project uses the [Express](https://expressjs.com/) to handle http requests and [Typeorm](https://typeorm.io/) to manipulate database data.
 
 ## Available Scripts
 
