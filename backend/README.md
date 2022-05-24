@@ -14,6 +14,6 @@ Runs the app in the development mode.
 
 Builds the app for production to the `dist` folder.
 
-### `npm run typeorm migration:run`
+### `npm run typeorm`
 
-To run database migrations.
+Manage the database. To start the database migration run 'npm run typeorm migration:run'
