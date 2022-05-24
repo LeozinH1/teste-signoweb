@@ -28,7 +28,7 @@ export const EnqueteHeader = styled.div`
 export const EnqueteNome = styled.div`
   white-space: pre-wrap;
   overflow-wrap: break-word;
-  width: 400px;
+  width: 350px;
   font-size: 1.3rem;
   font-weight: 700;
 
@@ -77,6 +77,8 @@ export const EnqueteOpcao = styled.label`
   gap: 20px;
   align-items: center;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
 `;
 
 export const OpcaoNome = styled.div`
@@ -93,4 +95,20 @@ export const OpcaoVoto = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+`;
+
+type PercentageProps = {
+  value: number;
+};
+
+export const OpcaoPercentage = styled.div<PercentageProps>`
+  position: absolute;
+
+  background: #000;
+  opacity: 0.05;
+  height: 100%;
+  width: ${(props) => props.value}%;
+  left: 0;
+  top: 0;
+  transition: width 0.5s ease-in-out;
 `;

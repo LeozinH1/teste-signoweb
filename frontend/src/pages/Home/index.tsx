@@ -80,7 +80,7 @@ const PageHome: React.FC = () => {
     <>
       <Wrapper>
         <EnquetesHeader>
-          <PageTitle>todas as enquetes</PageTitle>
+          <PageTitle>TODAS AS ENQUETES</PageTitle>
           <Link to="/create">+ Nova Enquete</Link>
         </EnquetesHeader>
 

@@ -8,11 +8,13 @@ export const ButtonStyle = styled.button`
   padding: 15px;
   border: none;
   font-size: 0.9rem;
-  background: #da1a2c;
+  background: var(--primary-color);
   color: #fff;
+  transition: 0.2s;
+  cursor: pointer;
 
   &:hover {
-    filter: grayscale(0.3);
+    background: var(--secondary-color);
   }
 
   &:disabled {

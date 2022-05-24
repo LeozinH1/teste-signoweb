@@ -17,6 +17,7 @@ import {
   EnqueteHeader,
   OpcaoVoto,
   InfoWrapper,
+  OpcaoPercentage,
 } from "./style";
 
 interface Opcao {
@@ -54,6 +55,7 @@ const PageEnquete: React.FC = () => {
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [countDown, setCountDown] = useState(0);
+  const [totalVotes, setTotalVotes] = useState(0);
   /*
    * React Toastify
    */
@@ -77,6 +79,12 @@ const PageEnquete: React.FC = () => {
       .then((res: AxiosResponse) => {
         setEnquete(res.data);
 
+        const totalVotes = res.data.opcoes.reduce((acc: any, curr: any) => {
+          return acc + curr.votos;
+        }, 0);
+
+        setTotalVotes(totalVotes);
+
         if (
           new Date(res.data.inicio) < new Date() &&
           new Date(res.data.termino) > new Date()
@@ -98,6 +106,12 @@ const PageEnquete: React.FC = () => {
       .then((res: AxiosResponse) => {
         notify("Obrigado por votar!");
         setEnquete(res.data);
+
+        const totalVotes = res.data.opcoes.reduce((acc: any, curr: any) => {
+          return acc + curr.votos;
+        }, 0);
+
+        setTotalVotes(totalVotes);
       })
       .catch((err: AxiosError) => {
         notifyError(
@@ -214,6 +228,10 @@ const PageEnquete: React.FC = () => {
                     disabled={btnDisabled}
                   />
                 </OpcaoVoto>
+
+                <OpcaoPercentage
+                  value={(100 * Number(opcao.votos)) / totalVotes}
+                />
               </EnqueteOpcao>
             ))}
           </OpcoesWrapper>
@@ -221,7 +239,7 @@ const PageEnquete: React.FC = () => {
 
           <Button
             disabled={btnDisabled}
-            style={{ cursor: btnDisabled ? "not-allowed" : "default" }}
+            style={{ cursor: btnDisabled ? "not-allowed" : "pointer" }}
           >
             Votar
           </Button>

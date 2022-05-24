@@ -15,7 +15,9 @@ export default createGlobalStyle`
   }
   
   :root {
-    --toastify-color-progress-light: #da1a2c;
+    --toastify-color-progress-light: var(--primary-color);
+    --primary-color: #383838;
+    --secondary-color: #484848;
   }
   
   body, input, button {

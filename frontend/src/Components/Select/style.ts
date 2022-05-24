@@ -15,6 +15,6 @@ export const SelectStyle = styled.select`
   cursor: pointer;
 
   &:focus {
-    border: 1px solid #da1a2c;
+    border: 1px solid var(--primary-color);
   }
 `;
